@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Edit Student{% else %}Add Student{% endif %} | StudentMS{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-heading">
+        <p class="eyebrow">{% if object %}Update Record{% else %}Registration{% endif %}</p>
+        <h1>{% if object %}Edit Student{% else %}Add Student{% endif %}</h1>
+        <p>
+            {% if object %}
+                Update the student's information below.
+            {% else %}
+                Enter the student's information to create a new record.
+            {% endif %}
+        </p>
+    </div>
+
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-error-summary">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }} <span class="required">*</span>
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <a class="button button-secondary" href="{% url 'students:list' %}">Cancel</a>
+            <button class="button button-primary" type="submit">
+                {% if object %}Save Changes{% else %}Add Student{% endif %}
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}

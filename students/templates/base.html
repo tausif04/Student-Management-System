@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Django Student Management System">
+    <title>{% block title %}Student Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav-container">
+            <a class="brand" href="{% url 'students:list' %}">Student<span>MS</span></a>
+            <nav>
+                <a href="{% url 'students:list' %}">Students</a>
+                <a class="nav-button" href="{% url 'students:create' %}">+ Add Student</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        {% if messages %}
+            <div class="messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">
+                        <span>{{ message }}</span>
+                        <button type="button" class="message-close" aria-label="Close message"
+                                onclick="this.parentElement.remove()">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; {% now "Y" %} Student Management System</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Students | StudentMS{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Student Records</p>
+        <h1>Students</h1>
+        <p class="page-description">Manage registered students from one place.</p>
+    </div>
+    <a class="button button-primary" href="{% url 'students:create' %}">+ Add Student</a>
+</section>
+
+{% if students %}
+<div class="card table-card">
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Course</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td data-label="Name">
+                        <a class="student-name" href="{% url 'students:detail' student.pk %}">
+                            {{ student.name }}
+                        </a>
+                    </td>
+                    <td data-label="Email">{{ student.email }}</td>
+                    <td data-label="Phone">{{ student.phone }}</td>
+                    <td data-label="Course">{{ student.course }}</td>
+                    <td data-label="Actions">
+                        <div class="action-group">
+                            <a class="button button-small button-secondary"
+                               href="{% url 'students:detail' student.pk %}">View</a>
+                            <a class="button button-small button-secondary"
+                               href="{% url 'students:update' student.pk %}">Edit</a>
+                            <a class="button button-small button-danger"
+                               href="{% url 'students:delete' student.pk %}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="card empty-state">
+    <div class="empty-icon">+</div>
+    <h2>No students yet</h2>
+    <p>Start by registering the first student.</p>
+    <a class="button button-primary" href="{% url 'students:create' %}">Add Student</a>
+</div>
+{% endif %}
+{% endblock %}
